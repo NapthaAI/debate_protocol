@@ -1,8 +1,8 @@
-name: template
-type: template
+name: debate_protocol
+type: debate_protocol
 author: naptha
 version: 0.1.0
-description: Base template for new tasks and flows.
+description: Debate Protocol.
 license: MIT
 
 models:
@@ -12,7 +12,12 @@ models:
     max_tokens: 1000
     temperature: 0
     api_base: http://localhost:11434
-
+  openai:
+    model: gpt-4o
+    max_tokens: 1000
+    temperature: 0
+    api_base: https://api.openai.com/v1
+    
 inputs:
     system_message: "You are a helpful AI assistant."
     save: false
