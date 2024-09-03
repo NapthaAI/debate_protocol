@@ -1,6 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 class ACLPerformative(str, Enum):
     PROPOSE = "PROPOSE"
@@ -14,7 +14,7 @@ class ACLMessage(BaseModel):
     receiver: str
     content: str
     reply_with: str
-    in_reply_to: str = None
+    in_reply_to: Optional[str] = None
     language: str = "ACL"
     ontology: str = "MarketPrediction"
     protocol: str = "Debate"

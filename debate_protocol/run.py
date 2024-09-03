@@ -42,16 +42,20 @@ class DebateSimulation:
             self.conversation.append(context_message)
 
     async def run_debate(self) -> List[ACLMessage]:
-        for _ in range(self.max_rounds):
+        for i in range(self.max_rounds):
+            logger.info(f"================== ROUND {i} ==================")
             for agent in self.agents:
+                logger.info(f"================== Agent {agent.name} ==================")
                 if not agent.name == "VERA_Agent":
-                    message = await agent(conversation=self.conversation, agent_type="debate")
+                    message = await agent(conversation=self.conversation, agent_name=agent.name, agent_type="debate")
+                    message = ACLMessage.parse_raw(message)
                     if message:
                         self.conversation.append(message)
             
             # Perform verification at the end by VeraAgent
             vera_agent = next(agent for agent in self.agents if agent.name == "VERA_Agent")
-            vera_message = await vera_agent(conversation=self.conversation, agent_type="vera")
+            vera_message = await vera_agent(conversation=self.conversation, agent_name=agent.name, agent_type="vera")
+            vera_message = ACLMessage.parse_raw(vera_message)
             if vera_message:
                 self.conversation.append(vera_message)
         
