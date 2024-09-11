@@ -72,7 +72,7 @@ async def run(inputs, worker_nodes=None, orchestrator_node=None, flow_run=None, 
         Agent(name="VERA_Agent", fn="debate_agent", worker_node=worker_nodes[0], orchestrator_node=orchestrator_node, flow_run=flow_run),
     ]    
 
-    debate = DebateSimulation(agents, max_rounds=10, initial_claim=inputs.initial_claim, context=inputs.context)
+    debate = DebateSimulation(agents, max_rounds=2, initial_claim=inputs.initial_claim, context=inputs.context)
     result = await debate.run_debate()
 
     print("Debate Transcript:")
