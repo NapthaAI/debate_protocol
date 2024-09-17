@@ -80,7 +80,7 @@ async def run(inputs, worker_nodes=None, orchestrator_node=None, flow_run=None, 
     for msg in result:
         print_colored_message(msg)
     
-    final_judgment = next(msg for msg in reversed(result) if msg.sender == "VERA")
+    final_judgment = next(msg for msg in reversed(result) if msg.sender == "VERA_Agent")
     print("\nFinal Judgment:")
     print("---------------")
     print(f"{Fore.MAGENTA}{final_judgment.content}{Style.RESET_ALL}")
