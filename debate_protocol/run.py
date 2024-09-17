@@ -72,7 +72,7 @@ async def run(inputs, worker_nodes=None, orchestrator_node=None, flow_run=None, 
         Agent(name="VERA_Agent", fn="debate_agent", worker_node=worker_nodes[0], orchestrator_node=orchestrator_node, flow_run=flow_run),
     ]    
 
-    debate = DebateSimulation(agents, max_rounds=2, initial_claim=inputs.initial_claim, context=inputs.context)
+    debate = DebateSimulation(agents, max_rounds=inputs.max_rounds, initial_claim=inputs.initial_claim, context=inputs.context)
     result = await debate.run_debate()
 
     print("Debate Transcript:")
@@ -114,6 +114,7 @@ Tesla faces growing competition and softening demand, impacting its stock price 
     inputs = {
         "initial_claim": initial_claim,
         "context": context,
+        "max_rounds": 2,
     }
     flow_run = {"consumer_id": "user:18837f9faec9a02744d308f935f1b05e8ff2fc355172e875c24366491625d932f36b34a4fa80bac58db635d5eddc87659c2b3fa700a1775eb4c43da6b0ec270d", 
                 "module_name": "debate_protocol", "module_type": "flow", "worker_nodes": ["http://localhost:7001"]}

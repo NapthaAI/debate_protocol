@@ -23,3 +23,4 @@ class ACLMessage(BaseModel):
 class InputSchema(BaseModel):
     initial_claim: str = Field(..., title="Initial Claim")
     context: str = Field(..., title="Context")
+    max_rounds: int = Field(..., title="Maximum Number of Rounds")
