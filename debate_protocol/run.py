@@ -85,7 +85,9 @@ async def run(inputs, worker_nodes=None, orchestrator_node=None, flow_run=None, 
     print("---------------")
     print(f"{Fore.MAGENTA}{final_judgment.content}{Style.RESET_ALL}")
 
-    return result
+    # jsonify the result
+    result_json = [msg.model_dump() for msg in result]
+    return result_json
 
 def print_colored_message(message: ACLMessage):
     color_map = {
