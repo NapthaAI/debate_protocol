@@ -1,8 +1,8 @@
-name: debate_protocol
-type: debate_protocol
+name: multiagent_debate
+type: multiagent_debate
 author: naptha
 version: 0.1.0
-description: Debate Protocol.
+description: Multiagent debate protocol.
 license: MIT
 
 models:

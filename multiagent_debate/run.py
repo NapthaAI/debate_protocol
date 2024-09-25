@@ -3,10 +3,10 @@ import asyncio
 from colorama import Fore, Style, init
 from typing import List
 from naptha_sdk.client.node import Node
-from naptha_sdk.schemas import ModuleRunInput
+from naptha_sdk.schemas import AgentRunInput
 from naptha_sdk.task import Task as Agent
 from naptha_sdk.utils import get_logger, load_yaml
-from debate_protocol.schemas import ACLMessage, ACLPerformative, InputSchema
+from multiagent_debate.schemas import ACLMessage, ACLPerformative, InputSchema
 
 logger = get_logger(__name__)
 # Initialize colorama
@@ -98,7 +98,7 @@ def print_colored_message(message: ACLMessage):
     print(f"{color}{message.sender} ({message.performative.value}): {message.content}{Style.RESET_ALL}")
 
 if __name__ == "__main__":
-    cfg_path = "debate_protocol/component.yaml"
+    cfg_path = "multiagent_debate/component.yaml"
     cfg = load_yaml(cfg_path)
 
     initial_claim = "Tesla's price will exceed $250 in 2 weeks."
@@ -117,8 +117,8 @@ Tesla faces growing competition and softening demand, impacting its stock price 
         "max_rounds": 2,
     }
     flow_run = {"consumer_id": "user:18837f9faec9a02744d308f935f1b05e8ff2fc355172e875c24366491625d932f36b34a4fa80bac58db635d5eddc87659c2b3fa700a1775eb4c43da6b0ec270d", 
-                "module_name": "debate_protocol", "module_type": "flow", "worker_nodes": ["http://localhost:7001"]}
-    flow_run = ModuleRunInput(**flow_run)
+                "agent_name": "multiagent_debate", "agent_run_type": "package", "worker_nodes": ["http://localhost:7001"]}
+    flow_run = AgentRunInput(**flow_run)
     inputs = InputSchema(**inputs)
     orchestrator_node = Node("http://localhost:7001")
     worker_nodes = [Node(coworker) for coworker in flow_run.worker_nodes]

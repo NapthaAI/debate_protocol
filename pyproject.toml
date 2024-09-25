@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "debate_protocol"
+name = "multiagent-debate"
 version = "0.1.0"
 description = ""
 authors = ["Richard Blythman <richardblythman@gmail.com>"]
