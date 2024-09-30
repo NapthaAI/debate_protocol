@@ -2,8 +2,6 @@
 import asyncio
 from colorama import Fore, Style, init
 from typing import List
-from naptha_sdk.client.node import Node
-from naptha_sdk.schemas import AgentRunInput
 from naptha_sdk.task import Task as Agent
 from naptha_sdk.utils import get_logger, load_yaml
 from multiagent_debate.schemas import ACLMessage, ACLPerformative, InputSchema
@@ -61,15 +59,17 @@ class DebateSimulation:
         
         return self.conversation
 
-async def run(inputs, worker_nodes=None, orchestrator_node=None, flow_run=None, cfg=None):
+async def run(inputs, worker_node_urls=None, *args, **kwargs):
+    from naptha_sdk.client.node import Node
+    from naptha_sdk.schemas import AgentRunInput
     logger.info(f"Inputs: {inputs}")
 
     agents = [
-        Agent(name="Agent_1", fn="debate_agent", worker_node=worker_nodes[0], orchestrator_node=orchestrator_node, flow_run=flow_run),
-        Agent(name="Agent_2", fn="debate_agent", worker_node=worker_nodes[0], orchestrator_node=orchestrator_node, flow_run=flow_run),
-        Agent(name="Agent_3", fn="debate_agent", worker_node=worker_nodes[0], orchestrator_node=orchestrator_node, flow_run=flow_run),
-        Agent(name="Agent_4", fn="debate_agent", worker_node=worker_nodes[0], orchestrator_node=orchestrator_node, flow_run=flow_run),
-        Agent(name="VERA_Agent", fn="debate_agent", worker_node=worker_nodes[0], orchestrator_node=orchestrator_node, flow_run=flow_run),
+        Agent(name="Agent_1", fn="debate_agent", worker_node_url=worker_node_urls[0], *args, **kwargs),
+        Agent(name="Agent_2", fn="debate_agent", worker_node_url=worker_node_urls[0], *args, **kwargs),
+        Agent(name="Agent_3", fn="debate_agent", worker_node_url=worker_node_urls[0], *args, **kwargs),
+        Agent(name="Agent_4", fn="debate_agent", worker_node_url=worker_node_urls[0], *args, **kwargs),
+        Agent(name="VERA_Agent", fn="debate_agent", worker_node_url=worker_node_urls[0], *args, **kwargs),
     ]    
 
     debate = DebateSimulation(agents, max_rounds=inputs.max_rounds, initial_claim=inputs.initial_claim, context=inputs.context)
@@ -116,13 +116,12 @@ Tesla faces growing competition and softening demand, impacting its stock price 
         "context": context,
         "max_rounds": 2,
     }
-    flow_run = {"consumer_id": "user:18837f9faec9a02744d308f935f1b05e8ff2fc355172e875c24366491625d932f36b34a4fa80bac58db635d5eddc87659c2b3fa700a1775eb4c43da6b0ec270d", 
+    agent_run = {"consumer_id": "user:18837f9faec9a02744d308f935f1b05e8ff2fc355172e875c24366491625d932f36b34a4fa80bac58db635d5eddc87659c2b3fa700a1775eb4c43da6b0ec270d", 
                 "agent_name": "multiagent_debate", "agent_run_type": "package", "worker_nodes": ["http://localhost:7001"]}
-    flow_run = AgentRunInput(**flow_run)
+    agent_run = AgentRunInput(**flow_run)
     inputs = InputSchema(**inputs)
     orchestrator_node = Node("http://localhost:7001")
-    worker_nodes = [Node(coworker) for coworker in flow_run.worker_nodes]
 
-    response = asyncio.run(run(inputs, worker_nodes, orchestrator_node, flow_run, cfg))
+    response = asyncio.run(run(inputs, agent_run.worker_node_urls, orchestrator_node, agent_run, cfg))
     print(response)
-    print("Flow Run: ", flow_run)
+    print("Agent Run: ", agent_run)
